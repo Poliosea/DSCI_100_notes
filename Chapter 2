@@ -1,0 +1,82 @@
+local = file is in your computer 
+remote = file is on the internet
+relative path = file in respect to your working directory // absolute path = file in respect to file's root folder
+
+# Absolute path always starts with "/", followed by every "path" you took
+# Think a detailed instruction on how to arrive to point B from anywhere
+
+    happy_data <- read_csv("/home/dsci-100/project3/data/happiness_report.csv")
+
+# Relative path is how we go from current directory to the file
+# Instead, think how do we go from our current location to point B
+    
+    happy_data <- read_csv("data/happiness_report.csv")
+
+# For online database (remote files), we type the url with a "/" at the end.
+
+    data <- read_csv("https://datasciencebook.ca/")
+____________________________________________________________________________________________
+
+# In csv (comma seperated values) files, the DELIMITER is a comma
+# Remember that many functions aren't in R itself, and we have to load in packages with the library() function.
+
+    library(tidyverse)
+
+# We sometimes have to skip certain lines to properly read in data with the skip() function. the number is how many lines we need to skip.
+
+    canlang_data <- read_csv("data/can_lang_meta-data.csv",
+                         skip = 3)
+____________________________________________________________________________________________
+
+# to read tab-separated values, use read_tsv.
+
+    canlang_data <- read_tsv("data/can_lang.tsv")
+
+____________________________________________________________________________________________
+
+# Both "read_csv" and "read_tsv" are special cases of the more general "read_delim" function
+# "\t" is tabular, "\c" is comma seperated.
+# by setting col_names to FALSE we tell R that we do not have column names in the data.
+
+canlang_data <- read_delim("data/can_lang_no_names.tsv",
+                           delim = "\t",
+                           col_names = FALSE)
+____________________________________________________________________________________________
+
+# Use the rename() function to rename columns
+# Remember to specify database first
+
+    rename(canlang_data,
+        category = X1,
+        language = X2)
+____________________________________________________________________________________________
+
+# We can read the url(Uniform Resource Locator) directly as well
+
+    url <- "https://raw.githubusercontent.com/UBC-DSCI/data/main/can_lang.csv"
+        canlang_data <- read_csv(url)
+
+____________________________________________________________________________________________
+
+# We can download the file if the data cannot be read
+# First argument = url // second argument = path to store file
+
+    download.file(url, "data/can_lang.csv")
+    canlang_data <- read_csv("data/can_lang.csv")
+____________________________________________________________________________________________
+# To read excel, download the function, then use read_excel() function
+
+    library(readxl)
+    canlang_data <- read_excel("data/can_lang.xlsx")
+____________________________________________________________________________________________
+# Write a dataframe onto data with write_csv() function
+# Seperate two arguments, apply "no_official_lang_data" to "data/no_official_languages.csv"
+
+    no_official_lang_data <- filter(can_lang, category != "Official languages")
+    write_csv(no_official_lang_data, "data/no_official_languages.csv")
+
+____________________________________________________________________________________________
+
+# These notes do not include 2.6 - 2.7 because time constraints.
+
+
