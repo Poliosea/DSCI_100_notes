@@ -1,3 +1,39 @@
-Making plots
-  ggplot(aes( x = language, y = mother_tongue) +
-      geom_bar ( stat = "identity")
+
+# csv = comma seperated values. use read_csv("something.csv") to read data. Remember quotation marks!
+    can_lang <- read_csv("data/languagedata")
+____________________________________________________________________________________________
+
+# We can use the filter function for extracting ROWS. The == is an equivalency operator and compares value.
+# In this case, "can_lang" is the first argument aka the database while "Aboriginal Peoples" is one of the values within the "category" column.
+# Our goal is to filter rows with “Aboriginal Peoples” in the "category" column.
+
+    filter (can_lang, category == “Aboriginal Peoples”)
+____________________________________________________________________________________________
+
+# We can arrange data with the arrange function.
+
+decreasing_order <-    arrange(can_lang, by = desc(mother_tongue))
+increasing_order <-    arrange(can_lang, mother_tongue)
+____________________________________________________________________________________________
+
+# We can extract certain rows by row number using the slice function.
+# 1:10 means row 1 to 10. you can use a period (.) to represent all rows, or use a comma to seperate values (1,2,3)
+  
+    slice(arranged_lang, 1:10)
+____________________________________________________________________________________________
+
+MAKING PLOTS (VISUALIZATIONS)
+
+# We can use the reordering function reorder the first variable (mother_tongue) based on the second variable (language)
+# aes is axis. REMEMBER.
+# + sign means another plot layer. This means that the order of coding matters!
+
+    ggplot(aes( x = language, y = reorder(mother_tongue, language) +
+      geom_bar ( stat = "identity") +
+      labs( x = "language", y = "mother tongue", color = "species") 
+
+
+
+  ggplot( aes ( x = language, y = mother_tongue, color = species) +
+    geom_point() +
+    labs( x = "language", y = "mother tongue", color = "species) 
