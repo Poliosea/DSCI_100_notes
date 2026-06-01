@@ -1,0 +1,36 @@
+variable: a characteristic, number, or quantity that can be measured.
+observation: all of the measurements for a given entity.
+value: a single measurement of a single variable for a given entity.
+
+# variable = column name // observation = individual row // value = a specific square in the data
+____________________________________________________________________________________________
+
+lists: objects containing multiple elements; can be different types (ex. dbl, int, chr 
+
+vector: object containing 1 or more elements; must all have the same datatype (ex. all dbl)
+# We can create vectors using the c() function. THIS IS NOT A COLUMN
+# Below is how to create the vector "region"
+
+regions <-  c("Toronto", "Calgary", "Ottawa")
+____________________________________________________________________________________________
+
+character	-> chr	->	letters or numbers surrounded by quotes	“1” , “Hello world!”
+double	->	dbl	->	numbers with decimals values	1.2333
+integer	->	int	->	numbers that do not contain decimals	1L, 20L (where “L” tells R to store as an integer)
+logical	->	lgl	->	either true or false	TRUE, FALSE
+factor	->	fct	->	used to represent data with a limited number of values (usually categories)	a color variable with levels red, green and orange
+
+# When you store numeric data, it is automatically stored as a double
+
+____________________________________________________________________________________________
+
+# you can use function class() to check if it is a data frame or a tibble
+
+    class(can_lang)
+____________________________________________________________________________________________
+
+# A tidy dataframe must satisfy these conditions:
+    each row is a single observation,
+    each column is a single variable, and
+    each value is a single cell 
+
