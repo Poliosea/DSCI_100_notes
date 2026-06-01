@@ -1,0 +1,3 @@
+Making plots
+  ggplot(aes( x = language, y = mother_tongue) +
+      geom_bar ( stat = "identity")
