@@ -127,6 +127,71 @@ ________________________________________________________________________________
 
 # now add the column (always remember data base)
 english_langs <- mutate(official_langs, most_at_home_proportion = most_at_home / city_pops)
+____________________________________________________________________________________________
 
+# the pipe operator "|>" takes the output of the left as an input to the right (like a pipe)
+# remember to assign to object + add dataframe (but if you added it before don't do it again)
+output <- data |>
+  mutate(new_col = old_col * 2) |>
+  filter(other_col > 5) |>
+  select(new_col)
+____________________________________________________________________________________________
 
+# summarize function does what it says, summarizes the values you specify in a data frame.
+# It will output only the minimum and maximum value of most_at_home in form of a tibble
+# one row with two columns "min_at_home" and "max_at_home"
+
+    summarise (region_lang, 
+        min_at_home = min(most_at_home),
+        max_most_at_home = max(most_at_home))
+
+# group_by is a function that becomes a condition for the following code
+# it identifies the group (column) that the later output will be calculated based on.
+# in this case, the summarization of the values (min and max) will be attached to the variables in the column "region"
+    group_by(region_lang, region) |>
+    summarize(
+    min_most_at_home = min(most_at_home),
+    max_most_at_home = max(most_at_home)
+    )
+
+____________________________________________________________________________________________
+
+# we have to take into account NA values in our dataframe
+# if we don't, when we do min/max/average calculations we will have errors
+# na.rm = TRUE shows that when we see NA we omit the value
+ 
+    summarize(region_lang_na,
+          min_most_at_home = min(most_at_home, na.rm = TRUE),
+          max_most_at_home = max(most_at_home, na.rm = TRUE))
+____________________________________________________________________________________________
+
+# we can use across() function to apply changes across columns
+# changes the selected columns to integer values 
+region_lang |>
+  mutate(across(mother_tongue:lang_known, as.integer))
+____________________________________________________________________________________________
+
+# applying row-based functions is a little more complicated
+# we use the function rowwise to compensate
+# rowwise dictates that for the following outputs, the change would be applied based on rows rather than affecting the whole column
+
+    region_lang |>
+        select(mother_tongue:lang_known) |>
+        rowwise() |>
+        mutate(maximum = max(c(mother_tongue,
+                             most_at_home,
+                             most_at_work,
+                             lang_known)))
+____________________________________________________________________________________________
+
+# according to the textbook, the map function ensures a certain type of output
+# each different variation reflects the type of output you want from the mapping operation
+
+map	<-	list 
+map_lgl	<- logical vector <-
+map_int	<-	integer vector <-
+map_dbl	<-	double vector <-
+map_chr	<- character vector <- 
+map_dfc	<-	data frame, combining column-wise <- shows summary of all rows
+map_dfr	<-	data frame, combining row-wise <- shows summary of all columns
 
