@@ -34,3 +34,99 @@ ________________________________________________________________________________
     each column is a single variable, and
     each value is a single cell 
 
+____________________________________________________________________________________________
+
+# use pivot_longer to turn from wide -> long (height)
+# names of columns Edmonton - Toronto becomes values of a new column called region
+# values of columns become values of a new column "mother_tongue"
+
+    pivot_longer(can_lang, cols = Edmonton:Toronto, 
+        names_to = "region", 
+        values_to = "mother_tongue"
+
+
+# use pivot_longer to turn from long -> wide
+# names
+
+    lang_home_tidy <- pivot_wider(lang_long,
+        names_from = type,
+        values_from = count
+____________________________________________________________________________________________
+
+# seperating multiple values in a cell by identifying the delimiter
+# For example, a cell may have a value 20/0, we can seperate by identifying the delimiter "/"
+# we use c() because we're making new vectors
+# convert function converts vector to the correct data type!
+
+    seperate(can_lang,
+        col = value, 
+        into = c("most_at_home", "most_at_work"),
+        sep = "/"
+        convert = TRUE
+____________________________________________________________________________________________
+
+# We can use the select function to select columns
+    column_range <- select(tidy_lang, language:most_at_work)
+
+# There are additional functions for select (starts_with(), contains()
+~
+# starts_with() is used for selecting columns that starts with certain characters
+
+    column_range <- select(tidy_lang, starts_with("most"))
+
+# contains() is used for selecting columns that contain certain characters
+
+    column_range <- select (tidy_lang, contains("_")
+____________________________________________________________________________________________
+
+# we can use the filter functions to filter rows
+    official_langs <- filter (tidy_lang, category == "official languages")
+    
+#  == is an equivalency operator; it tells R to select "official languages"
+#  != is an DISequivalency operator; it tells R to select all values in "category" OTHER THAN "official languages"
+
+
+# Below is an example of using a comma to filter rows where both conditions are satisfied. You can use "&" and "," interchangably.
+
+    filter(official_langs, region == "Montréal", language == "French")
+
+
+# We can use the "|" to filter rows where EITHER condition is satisfied (can be both)
+
+    filter(official_langs, region == "Montréal"| language == "French")
+
+
+ 
+# the %in% operator is different than == in the sense that 
+
+# "vectorA %in% vectorB" compares the first element of vectorA to all the elements in vectorB
+# "vectorA == vectorB" compares the first element of vectorA to the first element in vectorB, second of vectorA to second of vectorB
+
+
+# Use > or < to filter thresholds, >= is more or equal to 
+
+    filter(official_langs, most_at_home >= 2669195)
+____________________________________________________________________________________________
+
+# Mutate function: modify or create new data frame columns
+# remember to add data base
+# in this case, we change the type of the two columns to numeric values
+
+    official_langs_numeric <- mutate(official_langs_chr,
+        most_at_home = as.numeric(most_at_home),
+        most_at_work = as.numeric(most_at_work)
+
+# creating a new column with mutate
+# start with making a new vector
+    
+    city_pops <- c(5928040, 4098927, 2463431, 1392609, 1321426)
+
+# now filter data frame to where the language is English
+
+    english_langs <- filter(official_langs, language == "English")
+
+# now add the column (always remember data base)
+english_langs <- mutate(official_langs, most_at_home_proportion = most_at_home / city_pops)
+
+
+
