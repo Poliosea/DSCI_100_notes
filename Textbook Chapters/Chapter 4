@@ -79,6 +79,21 @@ islands_bar <- ggplot(islands_top12,
   scale_fill_manual(values = c("steelblue", "darkorange")) +
   theme(text = element_text(size = 10))
 
+____________________________________________________________________________________________
+HISTOGRAMS
+## histograms only have the x axis
+
+morley_hist <- ggplot(morley_rel,
+                    aes(x = relative_accuracy,
+                    fill = as_factor(Expt))) +     # factor is a data type in R that is often used to represent categories so we use "as_factor"
+  geom_histogram() +
+  facet_grid(rows = vars(Expt)) +        # facet_grid: create a plot that has multiple subplots arranged in a grid
+  geom_vline(xintercept = 0, linetype = "dashed") +        # geom_vline: draws a vertical line to show measurement
+  labs(x = "Relative Accuracy (%)",
+       y = "# Measurements",
+       fill = "Experiment ID") +
+  theme(text = element_text(size = 12))
+
 
 
 ____________________________________________________________________________________________
@@ -88,7 +103,10 @@ Strength: if the y variable reliably increases, decreases, or stays flat as x in
 Shape: if you can draw a straight line roughly through the data points, the relationship is linear. Otherwise, it is nonlinear.
 
 
-
+trends (lines): Does a line describe the trend well? If so, the trend is linear, and if not, the trend is nonlinear. Is the trend increasing, decreasing, or neither? Is there a periodic oscillation (wiggle) in the trend? Is the trend noisy (does the line “jump around” a lot) or smooth?
+distributions (scatters, histograms): How spread out are the data? Where are they centered, roughly? Are there any obvious “clusters” or “subgroups”, which would be visible as multiple bumps in the histogram?
+distributions of two variables (scatters): Is there a clear / strong relationship between the variables (points fall in a distinct pattern), a weak one (points fall in a pattern but there is some noise), or no discernible relationship (the data are too noisy to make any conclusion)?
+amounts (bars): How large are the bars relative to one another? Are there patterns in different groups of bars?
 
 
 
