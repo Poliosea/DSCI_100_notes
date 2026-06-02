@@ -1,0 +1,95 @@
+visualizations should help explain the question!
+
+Do nots:
+- use pie charts/ 3D visualizations unless absolutely necessary
+- use tables to make numerical comparisons
+- overplot (overlapping data)
+- adjust axis to show tiny differences
+
+Dos:
+- use legends and labels
+- color schemes understandable by colorblindness
+- make sure data is clearly visible
+- use colors sparingly (avoid distraction)
+
+____________________________________________________________________________________________
+
+scatter plots: visualize the relationship between two quantitative variables
+line plots: visualize trends with respect to an independent, ordered quantity (e.g., time)
+bar plots: visualize comparisons of amounts
+histograms: visualize the distribution of one quantitative variable (i.e., all its possible values and how often they occur)
+____________________________________________________________________________________________
+
+some basic functions
+- ggplot(data, aes())
+- geom_point/ geom_bar/ geom_line
+- "+" 
+- xlabs() & ylabs() OR labs()
+- theme()
+- xlim() & ylim()
+- \n <- new line
+
+
+____________________________________________________________________________________________
+
+Let's make a scatterplot!
+
+    co2_line <- ggplot(database, aes(x = date_measured, y = ppm)) +     # First, the ggplot function! Add the aesthetic mapping to tell R what you want to visualize
+        geom_point() +        # next, specify what kind of geometric object you want
+        xlab("Year") +        # labels and legends! Can also replace with labs(x = "...", y = "...")
+        ylab("Atmospheric CO2 \n(ppm)") +        # by using the \n or new linke function, now "atmospheric C02" and "ppm" will be two seperated lines
+        xlim(c(date("1990-01-01"), date("1993-12-01"))) +        # scale the x and y axis with the limiter function!
+        theme(text = element_text(size = 12))        # theme - lots more helper functions but this one decides text size
+
+
+____________________________________________________________________________________________
+
+## logorithmic scaling! its unlikely to be tested but here it is! 
+## makes the graph scale exponentially (in logs)
+## label_comma() function is used for adding commas to large numbers on the graph. Ex. 1,000,000
+    
+    scale_x_log10(labels = label_comma())
+____________________________________________________________________________________________
+
+## strangely specific functions you probably don't need to know
+## changes legend position
+
+    legend.position = "top",
+        legend.direction = "vertical")
+____________________________________________________________________________________________
+BAR GRAPH
+## slice_max() and slice_min() functions works the same as arrange -> slice, but it's more specialized
+## slice_max(DATABASE, order_by = size, n = NUMBER OF OUTPUTS)
+
+    islands_top12 <- slice_max(islands_df, order_by = size, n = 12)
+____________________________________________________________________________________________
+
+## in labs, fill function works the same as color in scatterplots 
+##
+
+islands_bar <- ggplot(islands_top12,
+                      aes(x = size,
+                          y = fct_reorder(landmass, size, .desc = TRUE),
+                          fill = landmass_type)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Size (1000 square mi)",
+       y = "Landmass",
+       fill = "Type",
+       title = "Earth's twelve largest landmasses") +
+  scale_fill_manual(values = c("steelblue", "darkorange")) +
+  theme(text = element_text(size = 10))
+
+
+
+____________________________________________________________________________________________
+
+Direction: if the y variable tends to increase when the x variable increases, then y has a positive relationship with x. If y tends to decrease when x increases, then y has a negative relationship with x. If y does not meaningfully increase or decrease as x increases, then y has little or no relationship with x.
+Strength: if the y variable reliably increases, decreases, or stays flat as x increases, then the relationship is strong. Otherwise, the relationship is weak. Intuitively, the relationship is strong when the scatter points are close together and look more like a “line” or “curve” than a “cloud.”
+Shape: if you can draw a straight line roughly through the data points, the relationship is linear. Otherwise, it is nonlinear.
+
+
+
+
+
+
+
