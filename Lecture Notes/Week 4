@@ -51,12 +51,23 @@ For KNN, you cannot have 0 neighbors
 - compute metrics by predicting labels on testing data only
 - accuracy = 
 
+iClicker
+- if you use accuracy as the sole metric for evaluating a classifier, it does not account for the type of mistake made by the model
+- Prioritize RECALL if we want to minimize number of false negatives because we need to figure out the number of 2 variables
+- We use cross validation to allow for better estimate of the accuracy measure by evaluating model on several subsets of training data
 
 
+____________________________________________________________________________________________
 
+Regression Prediction Problem
 
-
-
+- distance between the y value of the prediction and observation is the ERROR in our prediction
+RMSPE: sqrt((1/total # of predictions)* 
+            ((y value of observation point 1 - y value of predicted point 1)^2 +
+            (y value of observation point 2 - y value of predicted point 2)^2 +
+            ...
+            (y value of observation point n - y value of predicted point n)^2))
+RMSE: same formulla except on the data used to train the model
 
 
 
