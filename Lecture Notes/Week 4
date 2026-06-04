@@ -1,0 +1,66 @@
+- 99% accuracy on cancer prediction may not be very useful ->
+- If we need patients with truly malignant cancer to be diagnosed correctly, what metric should we prioritize? Recall
+- Precision is affected when a classifier never guess positive except…
+____________________________________________________________________________________________
+
+Adding evaluation to the pipeline for building a classifier
+
+# First, split data into two subjects
+
+training set -> fit and train model -> test set
+            -> test set ( don't touch test set until we have the train model
+
+-> compare predicted close to measured class
+
+- don't use testing data to train model
+    - you expose the model to the "answers", results in higher accuracy than it actually is
+____________________________________________________________________________________________
+
+Step 1: how to split data
+- shuffling: randomly reorder data before splitting
+- stratifaction: make sure the 2 ssplit subsets have roughly equal proportions on different labels
+
+____________________________________________________________________________________________
+
+Step 2: choosing K
+
+- choosing K is a part of training
+
+- choose values of K -> split training data into training set and validation set
+- for each K, train the model using training set only
+- evaluate accuracy for each validation set
+- pick K that maximizes validation performance
+
+____________________________________________________________________________________________
+
+Cross Validation
+
+split training set into multi[ple (not 2) parts
+cross value accuracy : (accuracy + accuracy + accuracy + accuracy + accuracy)/ # of folds
+
+
+Underfitting & Overfitting
+
+Overfitting: when your model is  sensitive to training data
+Underfitting: when your model is not sensitive to training data
+
+- overfit, overfit, fine, underfit
+
+For KNN, you cannot have 0 neighbors 
+
+- compute metrics by predicting labels on testing data only
+- accuracy = 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
