@@ -1,0 +1,124 @@
+# # Set the seed. Don't remove this!
+# set.seed(1234) 
+
+# options(repr.plot.height = 5, repr.plot.width = 6)
+
+# # your code here
+# hate_recipe <- recipe(y ~ ., data = training_set)
+# knn_spec <- nearest_neighbor(
+#   weight_func = "rectangular",
+#   neighbors = tune()
+# ) |>
+#   set_engine("kknn") |>
+#   set_mode("classification")
+
+# mnist_folds <- vfold_cv(training_set, v = 5)
+
+# mnist_workflow <- workflow() |>
+#   add_recipe(hate_recipe) |>
+#   add_model(knn_spec)
+
+# k_vals <- tibble(neighbors = 2:6)
+
+# mnist_results <- mnist_workflow |>
+#   tune_grid(
+#     resamples = mnist_folds,
+#     grid = k_vals
+#   ) |>
+#   collect_metrics()
+
+# cross_val_plot <- mnist_results |>
+#   filter(.metric == "accuracy") |>
+#   ggplot(aes(x = neighbors, y = mean)) +
+#   geom_point() +
+#   geom_line()+
+# labs(x = "flopping", y = "heck")
+
+# cross_val_plot
+
+
+# Set the seed. Don't remove this!
+set.seed(1234) 
+
+options(repr.plot.height = 5, repr.plot.width = 6)
+
+# your code here
+cancer_split <- initial_split(cancer, prop = 0.75, strata = Class)
+cancer_train <- training(cancer_split)
+cancer_test <- testing(cancer_split)
+
+pain_recipe <- recipe(y ~ ., data = training_set)%>%
+  step_normalize(X1:X784)
+
+knn_spec <- nearest_neighbor(weight_func = "rectangular", neighbors = tune()) |>
+      set_engine("kknn") |>
+      set_mode("classification")
+
+# pain_fit <- workflow() |>
+#       add_recipe(pain_recipe) |>
+#       add_model(knn_spec) |>
+#       fit(data = training_set)
+
+pain_vfold <- vfold_cv(training_set, v = 5, strata = y)
+
+### pain_fit <- workflow() |>
+#       add_recipe(pain_recipe) |>
+#       add_model(knn_spec) |>
+#       fit(data = pain_vfold) |>
+#     collect_metrics()
+# pain_resample_fit <- workflow() |>
+#       add_recipe(pain_recipe) |>
+#       add_model(knn_spec) |>
+#       fit_resamples(resamples = pain_vfold)
+
+# pain_test_predictions <- predict(pain_fit, testing_set) |>
+#     bind_cols(testing_set)
+
+# pain_test_predictions |>
+#   metrics(truth = y, estimate = .pred_class) |>
+#   filter(.metric == "accuracy")
+
+
+# pain_prediction_accuracy <- pain_test_predictions |>
+#         metrics(truth = y, estimate = .pred_class)
+
+# accuracies_lots <- knn_results |>
+#   filter(.metric == "accuracy")
+
+# k_lots <- tibble(neighbors = seq(from = 2, to = 6, by = 1))
+
+# tune_grid(resamples = cancer_vfold, grid = k_lots) |>
+#   collect_metrics()
+
+####
+
+
+k_lots <- tibble(neighbors = seq(from = 1, to = 385, by = 10))
+
+pain_fit <- workflow() |>
+      add_recipe(pain_recipe) |>
+      add_model(knn_spec) |>
+  tune_grid(resamples = pain_vfold, grid = k_lots) |>
+  collect_metrics()
+
+accuracies_lots <- pain_fit |>
+  filter(.metric == "accuracy")
+
+cross_val_plot <- ggplot(accuracies_lots, aes(x = neighbors, y = mean)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Neighbors", y = "Accuracy Estimate") +
+  theme(text = element_text(size = 12))
+
+
+
+
+
+# cross_val_plot <- pain_fit |>
+#   filter(.metric == "accuracy") |>
+#   ggplot(aes(x = accuracy, y = neighbors)) +
+#   geom_point() +
+#   geom_line()+
+# labs(x = "flopping", y = "heck")
+
+cross_val_plot
