@@ -1,0 +1,20 @@
+- if data point exactly on line, error = 0
+- maximize/ minimize RMSE is not tested
+
+
+
+Clustering
+
+- unsupervised learning task of separating data into groups by similarity
+- used for exploratory analysis, subgrouping, improve predictive models
+- we standardize to see differences
+- cluster based on type/ classification
+
+1. choose K (number of centroids)
+2. randomly place centroids
+3. assign observations to the closest centroid
+4. centroid of each cluster calculated based on all observations of the cluster
+5. adjust the observations based on the newly moved centroid + loop step 3 and 4 until nothing is moving/ reassigned
+
+- good cluster is tightly packed around centroid, has small within cluster sum of squared distance (WSSD)
+    - WSSD: add squared distance between each point and center(mean) of cluster
