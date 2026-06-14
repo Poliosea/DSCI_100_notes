@@ -1,0 +1,29 @@
+summary_tidy_data <- tidy_data |>
+select(seed, total_wins_pct) |>
+    summarise (
+        min_total_wins_pct = min(total_wins_pct),
+        max_total_wins_pct = max(total_wins_pct),
+        mean_total_wins_pct = mean(total_wins_pct),
+    
+        min_seed = min(seed),
+        max_seed = max(seed),
+        mean_seed = mean(seed),
+    )
+
+# summary_tidy_data2 <- tidy_data |>
+#   summarise(
+#     across(
+#       where(is.numeric),
+#       list(
+#         mean = ~mean(.x, na.rm = TRUE),
+#         min  = ~min(.x, na.rm = TRUE),
+#         max  = ~max(.x, na.rm = TRUE))))
+
+summary_tidy_data <- tidy_data |>
+  select(seed, total_wins_pct) |>
+  summarise( across( everything(),
+      list(
+        mean = ~mean(.x, na.rm = TRUE),
+        min  = ~min(.x, na.rm = TRUE),
+        max  = ~max(.x, na.rm = TRUE))))
+summary_tidy_data
