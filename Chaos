@@ -122,3 +122,46 @@ cross_val_plot <- ggplot(accuracies_lots, aes(x = neighbors, y = mean)) +
 # labs(x = "flopping", y = "heck")
 
 cross_val_plot
+
+
+
+
+# your code here
+
+# cancer_vfold <- vfold_cv(cancer_subset, v = 5, strata = Balance)
+
+# knn_spec <- nearest_neighbor(weight_func = "rectangular", neighbors = 1) |>
+#                  set_engine("kknn") |>
+#                  set_mode("regression")
+
+# credit_recipe <- recipe(Balance ~ Rating + Income, data = credit_training)
+
+
+# credit_fit2 <- workflow() |>
+# add_recipe(credit_recipe) |>
+# add_model(marathon_spec) |>
+# fit(data = credit_training)
+
+
+# credit_vfold <- vfold_cv(credit_training, v = 5, strata = time_hrs)
+
+# marathon_workflow2 <- workflow() |>
+#                      add_recipe(marathon_recipe) |>
+#                      add_model(marathon_spec)
+
+
+
+# knn_test_results <- credit_fit2 |>
+#         predict(credit_testing) |>
+#         bind_cols(credit_testing) |>
+#         metrics(truth = Balance, estimate = .pred)
+
+# knn_rmspe <- lm_test_results |>
+#          filter(.metric == "rmse") |>
+#          select(.estimate) |>
+#         as.numeric()
+
+# vfold_metrics_50 <- workflow() |>
+#                   add_recipe(cancer_recipe) |>
+#                   add_model(knn_spec) |>
+#                   fit_resamples(resamples = cancer_vfold_50) |>
