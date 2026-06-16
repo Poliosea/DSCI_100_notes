@@ -1,0 +1,52 @@
+Statistical Inference
+- processs of using a sample to make conclusions of a wider population
+- population: collection of all individuals
+- sample: randomly selected subset from pop
+- point estimate: numeric computation using sample
+  + sample statistic/ statistic
+- population parameter: a fixed, numerical value that describes an entire group or statistical population
+
+
+____________________________________________________________________________________________
+
+library(ggplot2)
+
+student_sample <- rep_sample_n(virtual_upgrads, size = 40)     #select random sample from population (virtual_upgrads) of 40 counts
+student_sample
+
+roblox_estimate_1 <- summarize(student_sample, 
+                                count = sum(roblox_players == "yes"),         # total number of roblox players in sample
+                                prop = sum(roblox_players == "yes")/40)       # proportion of total number of roblox players and total sample
+
+roblox_estimate_2 <- summarize(student_sample, 
+                                count = sum(roblox_players == "yes"),         # second sample
+                                prop = sum(roblox_players == "yes")/40)       # depending on number of samples you have, your "prop" will vary
+
+roblox_estimate_3 <- summarize(student_sample, 
+                                count = sum(roblox_players == "yes"),         # third sample
+                                prop = sum(roblox_players == "yes")/40)       
+
+
+
+- proportion is a statistic, can be different depending on sample extracted
+    + random and depends on sample behaviour
+    + make histogram of proportion to see deviation of distribution
+    + in real life we only take one sample
+
+
+replicates <- rep_sample_n(virtual_ugrads, size = 40, reps = 10000|>        # take many samples from pop, 10000 proportions of 40 counts.
+            group_by(replicate)
+            a
+
+ggplot(replicates, aes(x = proportion)) +
+    geom_histogram(binwidth = 0.5) +
+    labs (x = "Proportion of Roblox Players", y = "Count") +
+    theme(text = element_text(size = 20))
+
+
+
+
+
+
+
+
