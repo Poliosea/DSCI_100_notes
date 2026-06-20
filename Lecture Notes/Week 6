@@ -44,6 +44,22 @@ ggplot(replicates, aes(x = proportion)) +
     theme(text = element_text(size = 20))
 
 
+____________________________________________________________________________________________
+
+
+Sampling distribution: probability distribution of a specific sample statistic calculated from random samples of the same size drawn from a single population 
+
+
+bootstrapping: resampling technique used to estimate the accuracy of a sample statistic by repeatedly drawing samples from it with replacement
+- randomly draw a single observation from the original sample (drawn from population
+- record observation's value
+- return observation to original sample
+- repeat above the same number of times as there are observations in original sample (eg. sample size = 50, bootstrap sample = 50)
+
+
+- bootstrap = sample of same size, true sampling = sample of original size
+
+
 
 
 
