@@ -1,0 +1,16 @@
+# basket_fit <- workflow() |>
+#              add_recipe(basket_recipe) |>
+#              add_model(knn_spec) |>
+#              fit(data = basket_train)
+# # Now I pass my fitted model and the test data to the predict function, and add the columns to the original test data
+# basket_test_predictions <- predict(basket_fit, basket_test) |>
+#                           bind_cols(basket_test)
+
+# basket_prediction_accuracy <- basket_test_predictions |>
+#                         metrics(truth = tourney_finish, estimate = .pred_class)
+
+# basket_mat <- basket_test_predictions |>
+#                 conf_mat(truth = tourney_finish, estimate = .pred_class)
+
+# basket_prediction_accuracy
+# basket_mat
