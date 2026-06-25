@@ -1,0 +1,11 @@
+Classification
+
+n() = count the number of observations 
+nrow(dataframe) = total number of rows
+as.factor(...)/ as.double(...) = change current column to a factor/ numeric value
+fct_recode(columnname, "newname" = "oldname") = 
+
+
+
+# Let's start with manual knn calculations
+
