@@ -1,0 +1,18 @@
+# MANUAL CALCULATIONS 
+
+small_plot <- ggplot(small_sacramento, aes(x = sqft, y = price)) +
+  geom_point() +
+  xlab("House size (square feet)") +
+  ylab("Price (USD)") +
+  scale_y_continuous(labels = dollar_format()) +
+  geom_vline(xintercept = 2000, linetype = "dashed") +
+  theme(text = element_text(size = 12))
+
+small_plot
+
+nearest_neighbors <- small_sacramento |>
+  mutate(diff = abs(2000 - sqft)) |>
+  slice_min(diff, n = 5)
+
+prediction <- nearest_neighbors |>
+  summarise(predicted = mean(price))
