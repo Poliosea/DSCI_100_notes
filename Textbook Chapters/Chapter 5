@@ -5,7 +5,84 @@ nrow(dataframe) = total number of rows
 as.factor(...)/ as.double(...) = change current column to a factor/ numeric value
 fct_recode(columnname, "newname" = "oldname") = 
 
-
-
+cancer <- cancer |>
+  mutate(Class = as_factor(Class)) |>
+  mutate(Class = fct_recode(Class, "Malignant" = "M", "Benign" = "B"))
+glimpse(cancer)
+____________________________________________________________________________________________
 # Let's start with manual knn calculations
+
+new_obs_Perimeter <- 0
+new_obs_Concavity <- 3.5
+new_obs_Symmetry <- 1
+cancer |>
+  select(ID, Perimeter, Concavity, Symmetry, Class) |>
+  mutate(dist_from_new = sqrt((Perimeter - new_obs_Perimeter)^2 +
+                              (Concavity - new_obs_Concavity)^2 +
+                                (Symmetry - new_obs_Symmetry)^2)) |>
+  slice_min(dist_from_new, n = 5)
+____________________________________________________________________________________________
+
+# Prepping and Baking recipes - prep is so that the recipe can be baked into other data sets 
+# workflow doesn't require these steps
+
+uc_recipe <- recipe(Class ~ ., data = unscaled_cancer)|>
+  step_scale(all_predictors()) |>
+  step_center(all_predictors()) |>
+  prep()
+
+scaled_cancer <- bake(uc_recipe, unscaled_cancer)
+scaled_cancer
+
+library(themis)
+
+____________________________________________________________________________________________
+# Balancing classes with small observations
+ups_recipe <- recipe(Class ~ ., data = rare_cancer) |>
+  step_upsample(Class, over_ratio = 1, skip = FALSE) |>
+  prep()
+
+____________________________________________________________________________________________
+# Dealing with missing values
+
+# drop_na() deletes any ROW with N/A values
+no_missing_cancer <- missing_cancer |> drop_na()
+no_missing_cancer
+
+# replace NA values with mean of present entries
+impute_missing_recipe <- recipe(Class ~ ., data = missing_cancer) |>
+  step_impute_mean(all_predictors()) |>
+  prep()
+____________________________________________________________________________________________
+
+
+unscaled_cancer <- read_csv("data/wdbc_unscaled.csv") |>
+  mutate(Class = as_factor(Class)) |>
+  mutate(Class = fct_recode(Class, "Malignant" = "M", "Benign" = "B"))
+
+
+knn_spec <- nearest_neighbor(weight_func = "rectangular", neighbors = 5) |>
+  set_engine("kknn") |>
+  set_mode("classification")
+
+uc_recipe <- recipe(Class ~ Area + Smoothness, data = unscaled_cancer) |>
+  step_scale(all_predictors()) |>
+  step_center(all_predictors())
+
+knn_fit <- workflow() |>
+  add_recipe(uc_recipe) |>
+  add_model(knn_spec) |>
+  fit(data = unscaled_cancer)
+
+
+
+
+
+
+
+
+
+
+
+
 
