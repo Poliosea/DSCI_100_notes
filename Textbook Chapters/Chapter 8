@@ -1,0 +1,28 @@
+
+# STEPS
+
+1. User specifies the number of clusters.
+2. Initialize centroids randomly based on the number of clusters. In the diagram below, in Iteration 1, notice that three centroids are initialized randomly in blue, red, and green colors.
+3. Calculate the distance between data points and each centroid and assign each data point to the nearest centroid.
+4. Recalculate the mean of the centroid based on all the assigned data points, and this will change the position of the centroid, as you can see in Iteration 2 - 9, until it finally converges.
+5. Iteration keeps on going until there is no change to the centroid's mean
+
+Pick inflection point where WSSD only decreases in diminishing pattern
+____________________________________________________________________________________________
+library(gridExtra) for regression prob
+
+library(tidyclust)
+
+
+
+
+
+
+
+
+
+
+
+
+
+____________________________________________________________________________________________
