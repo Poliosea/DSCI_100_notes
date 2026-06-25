@@ -1,0 +1,93 @@
+
+positive label = label we are more interested in identifying
+negative label = "the other"
+
+
+True Positive: A malignant observation that was classified as malignant (top left in Table 6.1).
+False Positive: A benign observation that was classified as malignant (top right in Table 6.1).
+True Negative: A benign observation that was classified as benign (bottom right in Table 6.1).
+False Negative: A malignant observation that was classified as benign (bottom left in Table 6.1).
+
+
+Accuracy - number of correct predictions/ total number of predictions
+Confusion matrix - shows how many test set labels of each type are predicted correctly and incorrectly
+Precision - number of correct POSITIVE predictions/ total number of POSITIVE predictions
+Recall - number of correct positive predictions/ total number of positive TEST SET OBSERVATIONS
+____________________________________________________________________________________________
+# UNTUNED CODE
+cancer_split <- initial_split(cancer, prop = 0.75, strata = Class)
+cancer_train <- training(cancer_split)
+cancer_test <- testing(cancer_split)
+
+cancer_recipe <- recipe(Class ~ Smoothness + Concavity, data = cancer_train) |>
+  step_scale(all_predictors()) |>
+  step_center(all_predictors())
+
+knn_spec <- nearest_neighbor(weight_func = "rectangular", neighbors = 3) |>
+  set_engine("kknn") |>
+  set_mode("classification")
+
+knn_fit <- workflow() |>
+  add_recipe(cancer_recipe) |>
+  add_model(knn_spec) |>
+  fit(data = cancer_train)
+
+cancer_test_predictions <- predict(knn_fit, cancer_test) |>
+  bind_cols(cancer_test
+____________________________________________________________________________________________
+
+# PERFORMANCE EVAL
+# Accuracy
+cancer_test_predictions |>
+  metrics(truth = Class, estimate = .pred_class) |>
+  filter(.metric == "accuracy")
+
+# Precision
+cancer_test_predictions |>
+  precision(truth = Class, estimate = .pred_class, event_level = "first") 
+
+# Recall 
+cancer_test_predictions |>
+  recall(truth = Class, estimate = .pred_class, event_level = "first")
+
+# Confusion matrix
+confusion <- cancer_test_predictions |>
+             conf_mat(truth = Class, estimate = .pred_class)
+____________________________________________________________________________________________
+
+# CROSS VALIDATION
+
+cancer_vfold <- vfold_cv(cancer_train, v = 5, strata = Class)
+
+cancer_recipe <- recipe(Class ~ Smoothness + Concavity,
+                        data = cancer_train) |>
+  step_scale(all_predictors()) |>
+  step_center(all_predictors())
+
+
+# Tune
+knn_spec <- nearest_neighbor(weight_func = "rectangular",
+                             neighbors = tune()) |>
+  set_engine("kknn") |>
+  set_mode("classification")
+
+k_vals <- tibble(neighbors = seq(from = 1, to = 100, by = 5))
+
+knn_results <- workflow() |>
+  add_recipe(cancer_recipe) |>
+  add_model(knn_spec) |>
+  tune_grid(resamples = cancer_vfold, grid = k_vals) |>
+  collect_metrics()
+
+accuracies <- knn_results |>
+  filter(.metric == "accuracy")
+
+best_k <- accuracies |>
+        arrange(desc(mean)) |>
+        head(1) |>
+        pull(neighbors)
+
+____________________________________________________________________________________________
+
+
+
