@@ -16,3 +16,81 @@ nearest_neighbors <- small_sacramento |>
 
 prediction <- nearest_neighbors |>
   summarise(predicted = mean(price))
+____________________________________________________________________________________________
+# ONLY DIFFERENCES
+
+sacr_spec <- nearest_neighbor(weight_func = "rectangular",
+                              neighbors = tune()) |>
+  set_engine("kknn") |>
+  set_mode("regression") <- its regression now
+
+sacr_results <- sacr_wkflw |>
+  tune_grid(resamples = sacr_vfold, grid = gridvals) |>
+  collect_metrics() |>
+  filter(.metric == "rmse") <- we care about lowest RMSE value and not highest accuracy
+
+sacr_min <- sacr_results |>
+  filter(mean == min(mean)) <- lowest mean of RMSE
+
+____________________________________________________________________________________________
+
+Strengths: K-nearest neighbors regression
+
+is a simple, intuitive algorithm,
+requires few assumptions about what the data must look like, and
+works well with non-linear relationships (i.e., if the relationship is not a straight line).
+
+
+
+Weaknesses: K-nearest neighbors regression
+
+becomes very slow as the training data gets larger,
+may not perform well with a large number of predictors, and
+may not predict well beyond the range of values input in your training data.
+____________________________________________________________________________________________
+____________________________________________________________________________________________
+
+# LINEAR REGRESSION DIFFS
+# NO NEED TO SCALE
+
+lm_spec <- linear_reg() |>
+  set_engine("lm") |>
+  set_mode("regression")
+
+lm_test_results <- lm_fit |>
+  predict(sacramento_test) |>
+  bind_cols(sacramento_test) |>
+  metrics(truth = price, estimate = .pred)
+
+sqft_prediction_grid <- tibble(
+    sqft = c(
+        sacramento |> select(sqft) |> min(),
+        sacramento |> select(sqft) |> max()
+    )
+)
+
+sacr_preds <- lm_fit |>
+  predict(sqft_prediction_grid) |>
+  bind_cols(sqft_prediction_grid)
+
+lm_plot_final <- ggplot(sacramento, aes(x = sqft, y = price)) +
+  geom_point(alpha = 0.4) +
+  geom_line(data = sacr_preds,
+            mapping = aes(x = sqft, y = .pred),
+            color = "steelblue",
+            linewidth = 1) +
+  xlab("House size (square feet)") +
+  ylab("Price (USD)") +
+  scale_y_continuous(labels = dollar_format()) +
+  theme(text = element_text(size = 12))
+
+____________________________________________________________________________________________
+# EXTRACT SLOPE
+mcoeffs <- mlm_fit |>
+             extract_fit_parsnip() |>
+             tidy()
+
+# B0 is vertical intercept, B1 is slope of first predictor and B2 is slope of second predictor
+  variable you wanna predict = β0 + β1⋅(predictor 1) + β2⋅(predictor 2)
+
+
